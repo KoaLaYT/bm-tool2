@@ -24,13 +24,13 @@ function createWindow() {
    */
   mainWindow = new BrowserWindow({
     width: 660,
-    height: 540,
+    height: 500,
     useContentSize: true,
     resizable: false,
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
-      devTools: true
+      devTools: process.env.NODE_ENV === "development"
     }
   });
 
@@ -68,7 +68,7 @@ ipcMain.on("draw:open", (event, { info, path }) => {
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
-      devTools: true
+      devTools: process.env.NODE_ENV === "development"
     }
   });
 

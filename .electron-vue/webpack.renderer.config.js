@@ -117,7 +117,7 @@ let rendererConfig = {
             files: assets,
             options
           },
-          process,
+          process
         };
       },
       minify: {

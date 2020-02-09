@@ -48,7 +48,7 @@ export class LocalStorageUtil {
   }
   /** 储存项目信息 */
   static setProjectInfo({ name, info }) {
-    const preInfo = store.getItem(PROJECTS_KEY + name);
+    const preInfo = store.getItem(PORJECT_PREFIX + name);
     let newInfo = { ...info };
     if (preInfo) {
       newInfo = { ...JSON.parse(preInfo), ...newInfo };

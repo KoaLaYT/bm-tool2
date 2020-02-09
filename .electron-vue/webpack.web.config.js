@@ -87,7 +87,7 @@ let webConfig = {
             files: assets,
             options: options
           },
-          process,
+          process
         };
       },
       minify: {

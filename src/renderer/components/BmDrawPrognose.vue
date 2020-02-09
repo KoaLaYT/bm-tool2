@@ -1,23 +1,33 @@
 <template>
-  <el-form
-    ref="form"
-    :model="formData"
-    :rules="rules"
-    inline
-    size="mini"
-    label-width="100px"
-  >
-    <el-form-item label="预测周数：" prop="progWeek">
-      <el-input v-model="formData.progWeek" clearable></el-input>
-    </el-form-item>
-    <el-form-item v-for="prog in progs" :label="prog">
-      <el-input
-        v-model="formData[prog]"
-        clearable
-        @change="$emit('progChange')"
-      ></el-input>
-    </el-form-item>
-  </el-form>
+    <el-form
+        ref="form"
+        :model="formData"
+        :rules="rules"
+        inline
+        size="mini"
+        label-width="100px"
+    >
+        <el-form-item
+            label="预测周数："
+            prop="progWeek"
+        >
+            <el-input
+                v-model="formData.progWeek"
+                clearable
+            ></el-input>
+        </el-form-item>
+        <el-form-item
+            v-for="prog in progs"
+            :label="prog"
+            :key="prog"
+        >
+            <el-input
+                v-model="formData[prog]"
+                clearable
+                @change="$emit('progChange')"
+            ></el-input>
+        </el-form-item>
+    </el-form>
 </template>
 
 <script>

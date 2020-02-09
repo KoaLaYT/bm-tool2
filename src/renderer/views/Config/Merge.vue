@@ -96,10 +96,10 @@ export default {
     };
   },
   created() {
-    emitter.on("merged", () => {
+    emitter.removeAllListeners("merged").on("merged", () => {
       this.workFinish("对表完成，新母表已生成");
     });
-    emitter.on("outputed", () => {
+    emitter.removeAllListeners("outputed").on("outputed", () => {
       this.workFinish("导出完成，新TIPS已生成");
     });
   },

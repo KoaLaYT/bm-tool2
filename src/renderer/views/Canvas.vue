@@ -12,6 +12,7 @@
                     <el-radio-button
                         v-for="type in types"
                         :label="type"
+                        :key="type"
                     ></el-radio-button>
                 </el-radio-group>
             </template>
@@ -32,6 +33,7 @@
             <el-tab-pane
                 v-for="(type, index) in types"
                 :label="type"
+                :key="type"
             >
                 <BmDrawPrognose
                     :ref="'prog' + index"

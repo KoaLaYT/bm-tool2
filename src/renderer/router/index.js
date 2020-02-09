@@ -17,7 +17,7 @@ const routes = [
     component: Config,
     children: [
       {
-        path: "/merge",
+        path: "/",
         component: Merge
       },
       {
