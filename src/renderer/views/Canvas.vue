@@ -26,7 +26,7 @@
         <el-tabs
             v-model="selectedTab"
             tab-position="left"
-            style="height: 200px;"
+            style="height: 300px;"
             @tab-click="tabClick"
         >
             <el-tab-pane

@@ -24,7 +24,7 @@ function createWindow() {
    */
   mainWindow = new BrowserWindow({
     width: 660,
-    height: 550,
+    height: 540,
     useContentSize: true,
     resizable: false,
     autoHideMenuBar: true,
@@ -62,7 +62,7 @@ ipcMain.on("draw:open", (event, { info, path }) => {
     modal: true,
     show: false,
     width: 1000,
-    height: 880,
+    height: 980,
     useContentSize: true,
     resizable: false,
     autoHideMenuBar: true,

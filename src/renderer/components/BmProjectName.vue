@@ -20,7 +20,7 @@
                 >
                     <template slot-scope="{ item }">
                         <el-container style="align-items:center;justify-content:space-between">
-                            <span style="width:5rem;overflow:scroll;padding:0.5rem 0">{{
+                            <span style="width:5rem;overflow-x:scroll;overflow-y:hidden;padding:0.5rem 0">{{
                 item.value
               }}</span>
 

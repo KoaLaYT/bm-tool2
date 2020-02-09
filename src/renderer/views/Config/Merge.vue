@@ -1,57 +1,62 @@
 <template>
-  <div>
-    <!-- 项目名称 -->
-    <bm-project-name ref="name"></bm-project-name>
-    <!-- 文件路径 -->
-    <el-container class="flex-between">
-      <el-form
-        ref="form"
-        :model="formData"
-        :rules="rules"
-        inline
-        hide-required-asterisk
-        size="mini"
-      >
-        <el-form-item label="文件路径：" prop="path">
-          <el-input
-            v-model="formData.path"
-            @input="getFile"
-            style="width:50vw"
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <el-container>
-        <el-button
-          type="primary"
-          size="mini"
-          style="margin-left:auto"
-          @click="merge"
-          >对表</el-button
+    <div>
+        <!-- 项目名称 -->
+        <bm-project-name ref="name"></bm-project-name>
+        <!-- 文件路径 -->
+        <el-container class="flex-between">
+            <el-form
+                ref="form"
+                :model="formData"
+                :rules="rules"
+                inline
+                hide-required-asterisk
+                size="mini"
+            >
+                <el-form-item
+                    label="文件路径："
+                    prop="path"
+                >
+                    <el-input
+                        v-model="formData.path"
+                        @input="getFile"
+                        style="width:50vw"
+                    ></el-input>
+                </el-form-item>
+            </el-form>
+            <el-container>
+                <el-button
+                    type="primary"
+                    size="mini"
+                    style="margin-left:auto"
+                    @click="merge"
+                >对表</el-button>
+                <el-button
+                    type="success"
+                    size="mini"
+                    @click="output"
+                >导出</el-button>
+            </el-container>
+        </el-container>
+        <!-- 文件列表 -->
+        <el-checkbox-group
+            v-model="selectedFiles"
+            style="height: 300px;overflow-y: scroll;overflow-x:hidden"
         >
-        <el-button type="success" size="mini" @click="output">导出</el-button>
-      </el-container>
-    </el-container>
-    <!-- 文件列表 -->
-    <el-checkbox-group
-      v-model="selectedFiles"
-      style="height: 300px;overflow: scroll"
-    >
-      <el-checkbox
-        v-for="file in files"
-        :label="file.name"
-        :key="file.name"
-        style="display:block;margin-bottom:0.5rem"
-      >
-        <el-tag
-          size="mini"
-          :type="tagType(file.tag)"
-          style="font-family: monospace"
-          >{{ file.tag }}</el-tag
-        >
-        <span style="margin-left:10px">{{ file.name }}</span>
-      </el-checkbox>
-    </el-checkbox-group>
-  </div>
+            <el-checkbox
+                v-for="file in files"
+                :label="file.name"
+                :key="file.name"
+                style="display:block;margin-bottom:0.5rem"
+            >
+                <el-tag
+                    size="mini"
+                    :type="tagType(file.tag)"
+                    style="font-family: monospace"
+                >{{ file.tag }}</el-tag>
+                <span style="margin-left:10px">{{ file.name }}</span>
+            </el-checkbox>
+        </el-checkbox-group>
+    </div>
 </template>
 
 <script>

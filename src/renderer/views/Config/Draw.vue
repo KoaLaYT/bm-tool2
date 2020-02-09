@@ -1,112 +1,138 @@
 <template>
-  <div>
-    <el-form
-      ref="form"
-      :model="formData"
-      :rules="rules"
-      inline
-      hide-required-asterisk
-      size="mini"
-    >
-      <el-container style="justify-content:space-between">
-        <el-form-item label="项目名：" prop="name">
-          <el-autocomplete
-            v-model="formData.name"
-            clearable
-            :fetch-suggestions="suggestions"
-            @select="handleSelect"
-          >
-            <template slot-scope="{ item }">
-              <el-container
-                style="align-items:center;justify-content:space-between"
-              >
-                <span style="width:5rem;overflow:scroll;padding:0.5rem 0">
-                  {{ item.value }}
-                </span>
-                <el-button
-                  type="plain"
-                  icon="el-icon-close"
-                  circle
-                  @click.stop="deleteProject(item.value)"
-                ></el-button>
-              </el-container>
-            </template>
-          </el-autocomplete>
-        </el-form-item>
-        <el-form-item>
-          <el-checkbox v-model="formData.isNoVFF"
-            >这个项目分为PVS1和PVS2</el-checkbox
-          >
-        </el-form-item>
-      </el-container>
-      <el-container style="flex-flow:row nowrap">
-        <el-form-item label="起始周：" prop="startWeek">
-          <el-input v-model="formData.startWeek" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="结束周：" prop="endWeek">
-          <el-input v-model="formData.endWeek" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="当前周：" prop="curWeek">
-          <el-select
-            v-model="formData.curWeek"
-            clearable
-            :disabled="weekRange.length === 0"
-            :placeholder="weekRange.length === 0 ? '请先填写起始/结束周' : ''"
-          >
-            <el-option v-for="week in weekRange" :key="week" :value="week">{{
+    <div>
+        <el-form
+            ref="form"
+            :model="formData"
+            :rules="rules"
+            inline
+            hide-required-asterisk
+            size="mini"
+        >
+            <el-container style="justify-content:space-between">
+                <el-form-item
+                    label="项目名："
+                    prop="name"
+                >
+                    <el-autocomplete
+                        v-model="formData.name"
+                        clearable
+                        :fetch-suggestions="suggestions"
+                        @select="handleSelect"
+                    >
+                        <template slot-scope="{ item }">
+                            <el-container style="align-items:center;justify-content:space-between">
+                                <span style="width:5rem;overflow-y:scroll;overflow-x:hidden;padding:0.5rem 0">
+                                    {{ item.value }}
+                                </span>
+                                <el-button
+                                    type="plain"
+                                    icon="el-icon-close"
+                                    circle
+                                    @click.stop="deleteProject(item.value)"
+                                ></el-button>
+                            </el-container>
+                        </template>
+                    </el-autocomplete>
+                </el-form-item>
+                <el-form-item>
+                    <el-checkbox v-model="formData.isNoVFF">这个项目分为PVS1和PVS2</el-checkbox>
+                </el-form-item>
+            </el-container>
+            <el-container style="flex-flow:row nowrap">
+                <el-form-item
+                    label="起始周："
+                    prop="startWeek"
+                >
+                    <el-input
+                        v-model="formData.startWeek"
+                        clearable
+                    ></el-input>
+                </el-form-item>
+                <el-form-item
+                    label="结束周："
+                    prop="endWeek"
+                >
+                    <el-input
+                        v-model="formData.endWeek"
+                        clearable
+                    ></el-input>
+                </el-form-item>
+                <el-form-item
+                    label="当前周："
+                    prop="curWeek"
+                >
+                    <el-select
+                        v-model="formData.curWeek"
+                        clearable
+                        :disabled="weekRange.length === 0"
+                        :placeholder="weekRange.length === 0 ? '请先填写起始/结束周' : ''"
+                    >
+                        <el-option
+                            v-for="week in weekRange"
+                            :key="week"
+                            :value="week"
+                        >{{
               week
             }}</el-option>
-          </el-select>
-        </el-form-item>
-      </el-container>
-    </el-form>
-    <el-tabs tab-position="top" style="height: 250px;" v-model="selectedTab">
-      <el-tab-pane label="ZP5 Terminplan">
-        <bm-project-termin
-          ref="zp5"
-          :isNoVFF="formData.isNoVFF"
-          :reset="resetForm"
-        ></bm-project-termin>
-      </el-tab-pane>
-      <el-tab-pane label="ZP7 Terminplan">
-        <bm-project-termin
-          ref="zp7"
-          :isNoVFF="formData.isNoVFF"
-          :reset="resetForm"
-        ></bm-project-termin>
-      </el-tab-pane>
-    </el-tabs>
-    <el-container style="align-items:flex-start">
-      <el-button
-        type="primary"
-        size="mini"
-        style="margin-left:10px"
-        @click="save"
-        >保存</el-button
-      >
-      <el-button type="danger" size="mini" @click="reset">重置</el-button>
-      <el-upload
-        ref="upload"
-        action=""
-        accept=".xlsx"
-        :on-change="checkFile"
-        :before-remove="() => (fullFilePath = '')"
-        :auto-upload="false"
-        class="filepicker"
-      >
-        <el-button size="mini" type="success" style="margin-left: 10px"
-          >母表</el-button
+                    </el-select>
+                </el-form-item>
+            </el-container>
+        </el-form>
+        <el-tabs
+            tab-position="top"
+            style="height: 250px;"
+            v-model="selectedTab"
         >
-      </el-upload>
-      <el-button
-        type="success"
-        size="mini"
-        style="margin-left:auto;margin-right:10px"
-        @click="draw"
-        >画图</el-button
-      >
-    </el-container>
-  </div>
+            <el-tab-pane label="ZP5 Terminplan">
+                <bm-project-termin
+                    ref="zp5"
+                    :isNoVFF="formData.isNoVFF"
+                    :reset="resetForm"
+                ></bm-project-termin>
+            </el-tab-pane>
+            <el-tab-pane label="ZP7 Terminplan">
+                <bm-project-termin
+                    ref="zp7"
+                    :isNoVFF="formData.isNoVFF"
+                    :reset="resetForm"
+                ></bm-project-termin>
+            </el-tab-pane>
+        </el-tabs>
+        <el-container style="align-items:flex-start">
+            <el-button
+                type="primary"
+                size="mini"
+                style="margin-left:10px"
+                @click="save"
+            >保存</el-button>
+            <el-button
+                type="danger"
+                size="mini"
+                @click="reset"
+            >重置</el-button>
+            <el-upload
+                ref="upload"
+                action=""
+                accept=".xlsx"
+                :on-change="checkFile"
+                :before-remove="() => (fullFilePath = '')"
+                :auto-upload="false"
+                class="filepicker"
+            >
+                <el-button
+                    size="mini"
+                    type="success"
+                    style="margin-left: 10px"
+                >母表</el-button>
+            </el-upload>
+            <el-button
+                type="success"
+                size="mini"
+                style="margin-left:auto;margin-right:10px"
+                @click="draw"
+            >画图</el-button>
+        </el-container>
+    </div>
 </template>
 
 <script>
