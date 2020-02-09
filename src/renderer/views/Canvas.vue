@@ -1,47 +1,49 @@
 <template>
-  <div>
-    <el-page-header @back="goBack">
-      <template #title><span style="line-height:36px">返回</span></template>
-      <template #content>
-        <el-radio-group
-          v-model="selectedType"
-          @change="handleChange"
-          size="mini"
-          style="display:block;margin:5px auto 0 0"
+    <div>
+        <el-page-header @back="goBack">
+            <template #title><span style="line-height:36px">返回</span></template>
+            <template #content>
+                <el-radio-group
+                    v-model="selectedType"
+                    @change="handleChange"
+                    size="mini"
+                    style="display:block;margin:5px auto 0 0"
+                >
+                    <el-radio-button
+                        v-for="type in types"
+                        :label="type"
+                    ></el-radio-button>
+                </el-radio-group>
+            </template>
+        </el-page-header>
+
+        <el-image
+            :src="url"
+            style="display:block;margin:20px auto;width:900px"
+        ></el-image>
+
+        <!-- 预测 -->
+        <el-tabs
+            v-model="selectedTab"
+            tab-position="left"
+            style="height: 200px;"
+            @tab-click="tabClick"
         >
-          <el-radio-button
-            v-for="type in types"
-            :label="type"
-          ></el-radio-button>
-        </el-radio-group>
-      </template>
-    </el-page-header>
-
-    <el-image
-      :src="url"
-      style="display:block;margin:20px auto;width:900px"
-    ></el-image>
-
-    <!-- 预测 -->
-    <el-tabs
-      v-model="selectedTab"
-      tab-position="left"
-      style="height: 200px;"
-      @tab-click="tabClick"
-    >
-      <el-tab-pane v-for="(type, index) in types" :label="type">
-        <BmDrawPrognose
-          :ref="'prog' + index"
-          :type="type"
-          @progChange="progChange"
-        ></BmDrawPrognose>
-      </el-tab-pane>
-    </el-tabs>
-  </div>
+            <el-tab-pane
+                v-for="(type, index) in types"
+                :label="type"
+            >
+                <BmDrawPrognose
+                    :ref="'prog' + index"
+                    :type="type"
+                    @progChange="progChange"
+                ></BmDrawPrognose>
+            </el-tab-pane>
+        </el-tabs>
+    </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
 import { DrawerUtil } from "@/utils/drawer";
 import BmDrawPrognose from "@/components/BmDrawPrognose";
 
