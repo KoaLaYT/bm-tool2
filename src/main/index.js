@@ -1,6 +1,6 @@
 "use strict";
 
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 
 /**
  * Set `__static` path to static files in production
@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== "development") {
     .replace(/\\/g, "\\\\");
 }
 
-let mainWindow;
+let mainWindow, drawWindow;
 const winURL =
   process.env.NODE_ENV === "development"
     ? `http://localhost:9080`
@@ -53,6 +53,38 @@ app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+/** 创建画图用的窗口 */
+ipcMain.on("draw:open", (event, { info, path }) => {
+  drawWindow = new BrowserWindow({
+    parent: mainWindow,
+    modal: true,
+    show: false,
+    width: 1000,
+    height: 880,
+    useContentSize: true,
+    resizable: false,
+    autoHideMenuBar: true,
+    webPreferences: {
+      nodeIntegration: true,
+      devTools: true
+    }
+  });
+
+  drawWindow.loadURL(winURL + `#/canvas?info=${info}&path=${path}`);
+
+  drawWindow.once("ready-to-show", () => {
+    drawWindow.show();
+  });
+
+  drawWindow.on("closed", () => {
+    drawWindow = null;
+  });
+});
+
+ipcMain.on("draw:close", event => {
+  drawWindow && drawWindow.close();
 });
 
 /**

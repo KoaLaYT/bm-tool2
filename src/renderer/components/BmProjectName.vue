@@ -1,44 +1,55 @@
 <template>
-  <el-container class="flex-between">
-    <el-form
-      ref="form"
-      :model="formData"
-      :rules="rules"
-      inline
-      hide-required-asterisk
-      size="mini"
-    >
-      <el-form-item label="项目名：" prop="name">
-        <el-autocomplete
-          v-model="formData.name"
-          clearable
-          :fetch-suggestions="suggestions"
-          @select="handleSelect"
+    <el-container class="flex-between">
+        <el-form
+            ref="form"
+            :model="formData"
+            :rules="rules"
+            inline
+            hide-required-asterisk
+            size="mini"
         >
-          <template slot-scope="{ item }">
-            <el-container
-              style="align-items:center;justify-content:space-between"
+            <el-form-item
+                label="项目名："
+                prop="name"
             >
-              <span style="width:5rem;overflow:scroll;padding:0.5rem 0">{{
+                <el-autocomplete
+                    v-model="formData.name"
+                    clearable
+                    :fetch-suggestions="suggestions"
+                    @select="handleSelect"
+                >
+                    <template slot-scope="{ item }">
+                        <el-container style="align-items:center;justify-content:space-between">
+                            <span style="width:5rem;overflow:scroll;padding:0.5rem 0">{{
                 item.value
               }}</span>
 
-              <el-button
-                type="plain"
-                icon="el-icon-close"
-                circle
-                @click.stop="deleteProject(item.value)"
-              ></el-button>
-            </el-container>
-          </template>
-        </el-autocomplete>
-      </el-form-item>
-      <el-form-item label="PVS：" prop="pvs">
-        <el-input v-model="formData.pvs" clearable></el-input>
-      </el-form-item>
-    </el-form>
-    <el-button type="primary" size="mini" @click="saveProject">保存</el-button>
-  </el-container>
+                            <el-button
+                                type="plain"
+                                icon="el-icon-close"
+                                circle
+                                @click.stop="deleteProject(item.value)"
+                            ></el-button>
+                        </el-container>
+                    </template>
+                </el-autocomplete>
+            </el-form-item>
+            <el-form-item
+                label="PVS："
+                prop="pvs"
+            >
+                <el-input
+                    v-model="formData.pvs"
+                    clearable
+                ></el-input>
+            </el-form-item>
+        </el-form>
+        <el-button
+            type="primary"
+            size="mini"
+            @click="saveProject"
+        >保存</el-button>
+    </el-container>
 </template>
 
 <script>
@@ -80,14 +91,18 @@ export default {
     },
 
     handleSelect(item) {
-      this.formData.pvs = LocalStorageUtil.getProjectPvs(item.value);
+      const { pvs } = LocalStorageUtil.getProjectInfo(item.value, ["pvs"]);
+      this.formData.pvs = pvs;
     },
 
     saveProject() {
       this.$refs.form.validate(async valid => {
         if (!valid) return false;
 
-        LocalStorageUtil.setProjectPvs({ ...this.formData });
+        LocalStorageUtil.setProjectInfo({
+          name: this.formData.name,
+          info: { pvs: this.formData.pvs }
+        });
         this.allProjects = LocalStorageUtil.getProjects();
         this.$message({
           message: "保存成功",
