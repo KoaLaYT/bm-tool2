@@ -4,7 +4,7 @@
   "description": "An electron-vue project",
   "author": "KoaLaYT <hytohyeah@outlook.com>",
   "scripts": {
-    "build": "node .electron-vue/build.js && electron-builder",
+    "build": "node .electron-vue/build.js && electron-builder -w",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
     "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
@@ -70,29 +70,16 @@
     "files": [
       "dist/electron/**/*"
     ],
-    "dmg": {
-      "contents": [
+    "win": {
+      "icon": "build/icons/icon.ico",
+      "target": [
         {
-          "x": 410,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 130,
-          "y": 150,
-          "type": "file"
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
         }
       ]
-    },
-    "mac": {
-      "icon": "build/icons/icon.icns"
-    },
-    "win": {
-      "icon": "build/icons/icon.ico"
-    },
-    "linux": {
-      "icon": "build/icons"
     }
   },
   "license": null
