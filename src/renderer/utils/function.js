@@ -1,6 +1,6 @@
 module.exports = {
-  Q3Soll2: row =>
-    `if(
+    Q3Soll2: row =>
+        `if(
       X${row}="",
       "",
       if(
@@ -53,8 +53,8 @@ module.exports = {
         )
       )
     )`,
-  Q3Soll3: row =>
-    `if(
+    Q3Soll3: row =>
+        `if(
       X${row}="",
       "",
       if(
@@ -107,8 +107,8 @@ module.exports = {
         )
       )
     )`,
-  Q1Soll2: (row, pvsTime, PVSYear, PVSKW) =>
-    `if(
+    Q1Soll2: (row, pvsTime, PVSYear, PVSKW) =>
+        `if(
       X${row}="",
       "",
       if(
@@ -221,8 +221,8 @@ module.exports = {
         )
       )
     )`,
-  Q1Soll3: (row, pvsTime, PVSYear, PVSKW) =>
-    `if(
+    Q1Soll3: (row, pvsTime, PVSYear, PVSKW) =>
+        `if(
       X${row}="",
       "",
       if(
@@ -335,8 +335,8 @@ module.exports = {
         )
       )
     )`,
-  Q3Dauer: row =>
-    `
+    Q3Dauer: row =>
+        `
   if(
     X${row}="",
     "",
@@ -359,8 +359,8 @@ module.exports = {
     )
   )
   `,
-  Q1Dauer: row =>
-    `
+    Q1Dauer: row =>
+        `
   if(
     X${row}="",
     "",
@@ -383,8 +383,8 @@ module.exports = {
     )
   )
   `,
-  FE54ia: row =>
-    `
+    FE54ia: row =>
+        `
   if(
     BZ${row}="",
     "",
@@ -395,8 +395,8 @@ module.exports = {
     )
   )
   `,
-  N3: row =>
-    `
+    N3: row =>
+        `
   if(
     BZ${row}="",
     if(
@@ -427,8 +427,8 @@ module.exports = {
     )
   )
   `,
-  N1: row =>
-    `
+    N1: row =>
+        `
   if(
     BZ${row}="",
     if(

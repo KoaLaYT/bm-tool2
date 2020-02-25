@@ -786,8 +786,10 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    !row["Note 3 IST"] &&
-                    !row["Note 1 IST"]
+                    (!row["Note 3 IST"] ||
+                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW)) &&
+                    (!row["Note 1 IST"] ||
+                        (row["Note 1 IST"] && row["Note 1 IST"] > currentKW))
                 );
             }).length;
         case "ZP5 KT":
@@ -799,8 +801,10 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    !row["Note 3 IST"] &&
-                    !row["Note 1 IST"]
+                    (!row["Note 3 IST"] ||
+                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW)) &&
+                    (!row["Note 1 IST"] ||
+                        (row["Note 1 IST"] && row["Note 1 IST"] > currentKW))
                 );
             }).length;
         case "ZP5 HT":
@@ -810,8 +814,10 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    !row["Note 3 IST"] &&
-                    !row["Note 1 IST"]
+                    (!row["Note 3 IST"] ||
+                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW)) &&
+                    (!row["Note 1 IST"] ||
+                        (row["Note 1 IST"] && row["Note 1 IST"] > currentKW))
                 );
             }).length;
         case "ZP5 ZSB":
@@ -821,8 +827,10 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    !row["Note 3 IST"] &&
-                    !row["Note 1 IST"]
+                    (!row["Note 3 IST"] ||
+                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW)) &&
+                    (!row["Note 1 IST"] ||
+                        (row["Note 1 IST"] && row["Note 1 IST"] > currentKW))
                 );
             }).length;
     }
