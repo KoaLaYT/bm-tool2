@@ -474,7 +474,7 @@ function renderXaxis(beginWeek, endWeek) {
  * @param {string} startWeek
  * @param {string} endWeek
  */
-function getFullWeeksArray(startWeek, endWeek) {
+export function getFullWeeksArray(startWeek, endWeek) {
     const result = [];
 
     let currentWeek = startWeek;
@@ -709,7 +709,9 @@ function calc__MLIA(MQPL, currentKW, type) {
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
                     !row["N6 EM VSI"] &&
-                    (row["Q3 SOLL2"] > currentKW || !row["Q3 IST"])
+                    (!row["Q3 IST"] ||
+                        (row["Q3 IST"] && row["Q3 IST"] > currentKW))
+                    //(row["Q3 SOLL2"] > currentKW || !row["Q3 IST"])
                 );
             }).length;
         case "ZP5 Gesamt":
@@ -776,7 +778,8 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    !row["EBV SOLL"]
+                    (!row["EBV SOLL"] ||
+                        (row["EBV SOLL"] && row["EBV SOLL"] >= currentKW))
                 );
             }).length;
         case "ZP5 Gesamt":
@@ -847,7 +850,8 @@ function calc__EBVIA(MQPL, currentKW, type) {
                 return (
                     row["EBV SOLL"] &&
                     row["EBV SOLL"] <= currentKW &&
-                    !row["Q1 IST"]
+                    (!row["Q1 IST"] ||
+                        (row["Q1 IST"] && row["Q1 IST"] >= currentKW))
                 );
             }).length;
     }
@@ -865,7 +869,8 @@ function calc__FE54IA(MQPL, currentKW, type) {
                     row["Q1 IST"] &&
                     row["FE54 ia"] &&
                     row["FE54 ia"] <= currentKW &&
-                    !row["FE54 IST"]
+                    (!row["FE54 IST"] ||
+                        (row["FE54 IST"] && row["FE54 IST"] >= currentKW))
                 );
             }).length;
     }
