@@ -113,7 +113,7 @@
             <el-upload
                 ref="upload"
                 action=""
-                accept=".xlsx"
+                accept=".xlsx, image/*"
                 :on-change="checkFile"
                 :before-remove="() => (fullFilePath = '')"
                 :auto-upload="false"
@@ -123,7 +123,7 @@
                     size="mini"
                     type="success"
                     style="margin-left: 10px"
-                >母表</el-button>
+                >母表/截图</el-button>
             </el-upload>
             <el-button
                 type="success"
@@ -180,6 +180,8 @@ export default {
       selectedTab: "0",
       resetForm: false,
       fullFilePath: "",
+
+      imageFile: undefined,
 
       loading: undefined
     };
@@ -289,8 +291,12 @@ export default {
     },
 
     checkFile(file) {
-      if (!/mqpl/i.test(file.name)) {
+      if (/^image/i.test(file.raw.type)) {
         this.fullFilePath = "";
+        this.imageFile = file;
+      } else if (!/mqpl/i.test(file.name)) {
+        this.fullFilePath = "";
+        this.imageFile = undefined;
         this.$refs.upload.clearFiles();
         this.$message({
           message: "请选择MQPL母表",
@@ -300,6 +306,7 @@ export default {
         });
       } else {
         this.fullFilePath = file.raw.path;
+        this.imageFile = undefined;
       }
     },
 
@@ -315,9 +322,9 @@ export default {
       }
       if (res !== -1) return;
       // 是否选择了母表
-      if (!this.fullFilePath) {
+      if (!this.fullFilePath && !this.imageFile) {
         return this.$message({
-          message: "请选择MQPL母表",
+          message: "请选择MQPL母表或曲线截图",
           type: "error",
           showClose: true,
           center: true
@@ -325,10 +332,17 @@ export default {
       }
 
       this.loading = this.$loading({ fullscreen: true });
-      this.$electron.ipcRenderer.send("draw:open", {
-        info: JSON.stringify({ ...this.composeProjectInfo() }),
-        path: JSON.stringify(this.fullFilePath)
-      });
+      if (this.fullFilePath) {
+        this.$electron.ipcRenderer.send("draw:open", {
+          info: JSON.stringify({ ...this.composeProjectInfo() }),
+          path: JSON.stringify(this.fullFilePath)
+        });
+      } else if (this.imageFile) {
+        this.$electron.ipcRenderer.send("line:open", {
+          info: JSON.stringify({ ...this.composeProjectInfo() }),
+          path: JSON.stringify(window.URL.createObjectURL(this.imageFile.raw))
+        });
+      }
       setTimeout(() => {
         this.loading && this.loading.close();
       }, 3000);
