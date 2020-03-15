@@ -4,7 +4,7 @@ let canvas = undefined;
 let ctx = undefined;
 
 export async function drawLines(path, termin, amends) {
-    const imageInfo = await getImageInfo(path);
+    const imageInfo = await getImageInfo(path, amends.heightRatio);
     // [1] 获取柱子的宽度、第一根柱子的位置、间隙的宽度
     // 找到最长的一段非白色区域（RGB小于250，且浮动不超过2）
     // 去除异常值后的平均值即为宽度
@@ -21,7 +21,7 @@ export async function drawLines(path, termin, amends) {
 }
 
 /** 从file获取图片的R,G,B,A信息及图片的尺寸 */
-async function getImageInfo(path) {
+async function getImageInfo(path, ratio) {
     return new Promise(resolve => {
         const img = document.createElement("img");
 
@@ -30,8 +30,13 @@ async function getImageInfo(path) {
         img.addEventListener("load", () => {
             canvas = document.createElement("canvas");
             canvas.width = img.width;
-            canvas.height = img.height * 1.05;
+            canvas.height = img.height * (1 + ratio / 100);
             ctx = canvas.getContext("2d");
+            // 在底部加一层白色底色
+            ctx.save();
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(0, img.height, img.width, (img.height * ratio) / 100);
+            ctx.restore();
 
             ctx.drawImage(img, 0, 0);
 
@@ -183,7 +188,7 @@ function drawTermin({ width, index: startX, gap }, plan, { height }, amends) {
                 startX +
                 index * (width + gap + amends.width + amends.gap) +
                 (width + amends.width) / 2,
-            y: Math.floor(height * 0.98)
+            y: Math.floor(height * (1 - amends.height / 100))
         };
 
         let text1 = termin;

@@ -80,6 +80,31 @@
                         ></el-input-number>
                     </div>
                 </el-container>
+                <el-container>
+                    <div>
+                        <span>箭头位置(%)：</span>
+                        <el-input-number
+                            v-model="amends.height"
+                            :step="1"
+                            :precision="0"
+                            size="mini"
+                            @change="draw"
+                        ></el-input-number>
+                        <span style="font-size:0.8rem">(最底部：0%，最顶部：100%)</span>
+                    </div>
+                </el-container>
+                <el-container>
+                    <div>
+                        <span>底部要增加的高度(%)：</span>
+                        <el-input-number
+                            v-model="amends.heightRatio"
+                            :step="1"
+                            :precision="0"
+                            size="mini"
+                            @change="draw"
+                        ></el-input-number>
+                    </div>
+                </el-container>
 
             </el-container>
         </div>
@@ -106,7 +131,14 @@ export default {
       drawnUrl: "",
       loading: false,
       guess: { width: 0, gap: 0 },
-      amends: { width: 0.6, gap: 0.65, length: 650, type: "zp7" }
+      amends: {
+        width: 0.6,
+        gap: 0.65,
+        length: 650,
+        type: "zp7",
+        height: 0,
+        heightRatio: 10
+      }
     };
   },
   created() {
