@@ -849,9 +849,9 @@ function calc__EBVIA(MQPL, currentKW, type) {
             ).filter(row => {
                 return (
                     row["EBV SOLL"] &&
-                    row["EBV SOLL"] < currentKW &&
+                    row["EBV SOLL"] <= currentKW &&
                     (!row["Q1 IST"] ||
-                        (row["Q1 IST"] && row["Q1 IST"] >= currentKW))
+                        (row["Q1 IST"] && row["Q1 IST"] > currentKW))
                 );
             }).length;
     }
