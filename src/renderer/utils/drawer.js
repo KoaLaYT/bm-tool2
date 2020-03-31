@@ -779,7 +779,7 @@ function calc__Q3(MQPL, currentKW, type) {
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
                     (!row["EBV SOLL"] ||
-                        (row["EBV SOLL"] && row["EBV SOLL"] >= currentKW))
+                        (row["EBV SOLL"] && row["EBV SOLL"] > currentKW))
                 );
             }).length;
         case "ZP5 Gesamt":
@@ -870,7 +870,7 @@ function calc__FE54IA(MQPL, currentKW, type) {
                     row["FE54 ia"] &&
                     row["FE54 ia"] <= currentKW &&
                     (!row["FE54 IST"] ||
-                        (row["FE54 IST"] && row["FE54 IST"] >= currentKW))
+                        (row["FE54 IST"] && row["FE54 IST"] > currentKW))
                 );
             }).length;
     }
