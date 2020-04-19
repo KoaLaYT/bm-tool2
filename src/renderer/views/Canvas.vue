@@ -18,10 +18,15 @@
             </template>
         </el-page-header>
 
-        <el-image
-            :src="url"
-            style="display:block;margin:20px auto;width:900px"
-        ></el-image>
+        <a
+            :href="url"
+            download="123.png"
+        >
+            <el-image
+                :src="url"
+                style="display:block;margin:20px auto;width:900px"
+            ></el-image>
+        </a>
 
         <!-- 预测 -->
         <el-tabs
