@@ -778,8 +778,8 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    (!row["EBV SOLL"] ||
-                        (row["EBV SOLL"] && row["EBV SOLL"] > currentKW))
+                    (!row["Q1 IST"] ||
+                        (row["Q1 IST"] && row["Q1 IST"] > currentKW))
                 );
             }).length;
         case "ZP5 Gesamt":
@@ -848,10 +848,10 @@ function calc__EBVIA(MQPL, currentKW, type) {
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
             ).filter((row) => {
                 return (
-                    row["EBV SOLL"] &&
-                    row["EBV SOLL"] <= currentKW &&
-                    (!row["Q1 IST"] ||
-                        (row["Q1 IST"] && row["Q1 IST"] > currentKW))
+                    row["Q1 IST"] &&
+                    row["Q1 IST"] <= currentKW &&
+                    (!row["EBV IST"] ||
+                        (row["EBV IST"] && row["EBV IST"] > currentKW))
                 );
             }).length;
     }
@@ -866,8 +866,8 @@ function calc__FE54IA(MQPL, currentKW, type) {
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
             ).filter((row) => {
                 return (
-                    row["Q1 IST"] &&
-                    row["Q1 IST"] <= currentKW &&
+                    row["EBV IST"] &&
+                    row["EBV IST"] <= currentKW &&
                     row["BMG SOLL"] &&
                     (!row["N1 IST"] ||
                         (row["N1 IST"] && row["N1 IST"] > currentKW) ||
