@@ -13,20 +13,20 @@ canvas.height = 588 * RATIO;
 // X轴基础位置
 const XbeginPoint = {
     x: 30 * RATIO,
-    y: 520 * RATIO
+    y: 520 * RATIO,
 };
 const XendPoint = {
     x: 770 * RATIO,
-    y: 520 * RATIO
+    y: 520 * RATIO,
 };
 // Y轴基础位置
 const YbeginPoint = {
     x: 30 * RATIO,
-    y: 520 * RATIO
+    y: 520 * RATIO,
 };
 const YendPoint = {
     x: 30 * RATIO,
-    y: 10 * RATIO
+    y: 10 * RATIO,
 };
 // 定义绘制的内容
 const drawMetaInfo = [
@@ -42,9 +42,9 @@ const drawMetaInfo = [
             "EBV i.A",
             "FE54 i.A",
             "Note3",
-            "Note1"
+            "Note1",
         ],
-        curves: ["Q3 SOLL", "Q1 SOLL", "Gesamt", "IST", "SOLL"]
+        curves: ["Q3 SOLL", "Q1 SOLL", "Gesamt", "IST", "SOLL"],
     },
     {
         type: "ZP5",
@@ -56,10 +56,10 @@ const drawMetaInfo = [
             "M/L i.A",
             "Q3",
             "Note3",
-            "Note1"
+            "Note1",
         ],
-        curves: ["IST", "SOLL", "Gesamt", "Q3 SOLL", "Q1 SOLL"]
-    }
+        curves: ["IST", "SOLL", "Gesamt", "Q3 SOLL", "Q1 SOLL"],
+    },
 ];
 // 定义计算的函数
 const calc__funcs = {
@@ -79,7 +79,7 @@ const calc__funcs = {
     "Q1 SOLL": calc__Q1SOLL,
     Gesamt: calc__Gesamt,
     IST: calc__IST,
-    SOLL: calc__SOLL
+    SOLL: calc__SOLL,
 };
 // 定义曲线的颜色
 const colors = {
@@ -99,7 +99,7 @@ const colors = {
     "Q1 SOLL": "rgb(26,141,26)",
     Gesamt: "red",
     IST: "rgb(113,220,220)",
-    SOLL: "rgb(0,0,255)"
+    SOLL: "rgb(0,0,255)",
 };
 
 const emitter = new EventEmitter();
@@ -124,31 +124,31 @@ export class DrawerUtil {
         switch (type) {
             case "ZP7":
                 partsNum = MQPL.filter(
-                    row =>
+                    (row) =>
                         row["Bezug"] !== "CKD" &&
                         (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
                 ).length;
                 break;
             case "ZP5 Gesamt":
                 partsNum = MQPL.filter(
-                    row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+                    (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
                 ).length;
                 break;
             case "ZP5 KT":
                 partsNum = MQPL.filter(
-                    row =>
+                    (row) =>
                         row["ZP"] === "ZP5" &&
                         (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
                 ).length;
                 break;
             case "ZP5 HT":
                 partsNum = MQPL.filter(
-                    row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+                    (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
                 ).length;
                 break;
             case "ZP5 ZSB":
                 partsNum = MQPL.filter(
-                    row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+                    (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
                 ).length;
                 break;
             default:
@@ -163,7 +163,7 @@ export class DrawerUtil {
             projectInfo.startWeek,
             projectInfo.endWeek
         );
-        const info = drawMetaInfo.find(info => type.includes(info.type));
+        const info = drawMetaInfo.find((info) => type.includes(info.type));
 
         const width = (XendPoint.x - XbeginPoint.x) / fullTermin.length;
         const height = (YbeginPoint.y - YendPoint.y) / partsNum;
@@ -173,16 +173,16 @@ export class DrawerUtil {
             "Q1 SOLL": [],
             Gesamt: [],
             IST: [],
-            SOLL: []
+            SOLL: [],
         };
         fullTermin.forEach((date, index) => {
             let accNumOfPillar = 0;
             if (date <= projectInfo.curWeek) {
-                info.pillars.forEach(pillar => {
+                info.pillars.forEach((pillar) => {
                     const num = calc__funcs[pillar](MQPL, date, type);
                     const startPoint = {
                         x: XbeginPoint.x + width * index + 1 * RATIO,
-                        y: YendPoint.y + height * accNumOfPillar
+                        y: YendPoint.y + height * accNumOfPillar,
                     };
                     renderPillar(
                         startPoint,
@@ -194,7 +194,7 @@ export class DrawerUtil {
                 });
             }
             // 记录曲线坐标
-            info.curves.forEach(curve => {
+            info.curves.forEach((curve) => {
                 if (curve === "IST" && date > projectInfo.curWeek) {
                     return;
                 }
@@ -205,7 +205,7 @@ export class DrawerUtil {
                         width * index +
                         1 * RATIO +
                         (width - 2 * RATIO) / 2,
-                    y: YbeginPoint.y - height * num
+                    y: YbeginPoint.y - height * num,
                 };
                 curvesPoints[curve].push(point);
             });
@@ -217,10 +217,10 @@ export class DrawerUtil {
             const startKW = projectInfo.startWeek;
             const index = getWeeksArray(startKW, prognoseKW).length - 1;
             let accNumOfPillar = 0;
-            info.pillars.forEach(pillar => {
+            info.pillars.forEach((pillar) => {
                 const startPoint = {
                     x: XbeginPoint.x + width * index + 1 * RATIO,
-                    y: YendPoint.y + height * accNumOfPillar
+                    y: YendPoint.y + height * accNumOfPillar,
                 };
                 const num = Number(prognoseInfo[pillar]) || 0;
 
@@ -241,7 +241,7 @@ export class DrawerUtil {
         info.pillars.forEach((pillar, index) => {
             const point = {
                 x: XendPoint.x + 5 * RATIO,
-                y: YendPoint.y + index * 30 * RATIO
+                y: YendPoint.y + index * 30 * RATIO,
             };
             const text = `${pillar} = ${calc__funcs[pillar](
                 MQPL,
@@ -256,7 +256,7 @@ export class DrawerUtil {
                 y:
                     YendPoint.y +
                     (10 + index * 30) * RATIO +
-                    info.pillars.length * 30 * RATIO
+                    info.pillars.length * 30 * RATIO,
             };
             let text;
             if (
@@ -288,7 +288,7 @@ export class DrawerUtil {
                 const index = fullTermin.indexOf(KW);
                 const point = {
                     x: XbeginPoint.x + index * width + width / 2,
-                    y: XbeginPoint.y + 15 * RATIO
+                    y: XbeginPoint.y + 15 * RATIO,
                 };
 
                 let text1 = termin;
@@ -450,7 +450,7 @@ function renderXaxis(beginWeek, endWeek) {
     weeksArray.forEach((week, index) => {
         const startPoint = {
             x: XbeginPoint.x + width * (index + 1),
-            y: XbeginPoint.y
+            y: XbeginPoint.y,
         };
         ctx.beginPath();
         ctx.moveTo(startPoint.x, startPoint.y);
@@ -520,28 +520,28 @@ function calc__EMOFFEN(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => !row["EM SOLL1"]).length;
+            ).filter((row) => !row["EM SOLL1"]).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => !row["EM SOLL1"]).length;
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => !row["EM SOLL1"]).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => !row["EM SOLL1"]).length;
+            ).filter((row) => !row["EM SOLL1"]).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => !row["EM SOLL1"]).length;
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => !row["EM SOLL1"]).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => !row["EM SOLL1"]).length;
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => !row["EM SOLL1"]).length;
     }
 }
 
@@ -549,28 +549,28 @@ function calc__SpaeteEMT(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => row["EM SOLL1"] > currentKW).length;
+            ).filter((row) => row["EM SOLL1"] > currentKW).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => row["EM SOLL1"] > currentKW).length;
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => row["EM SOLL1"] > currentKW).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => row["EM SOLL1"] > currentKW).length;
+            ).filter((row) => row["EM SOLL1"] > currentKW).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => row["EM SOLL1"] > currentKW).length;
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => row["EM SOLL1"] > currentKW).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => row["EM SOLL1"] > currentKW).length;
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => row["EM SOLL1"] > currentKW).length;
     }
 }
 
@@ -578,10 +578,10 @@ function calc__AbgelEMT(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["EM SOLL1"] &&
                     row["EM SOLL1"] <= currentKW &&
@@ -590,8 +590,8 @@ function calc__AbgelEMT(MQPL, currentKW, type) {
             }).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => {
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => {
                 return (
                     row["EM SOLL1"] &&
                     row["EM SOLL1"] <= currentKW &&
@@ -600,10 +600,10 @@ function calc__AbgelEMT(MQPL, currentKW, type) {
             }).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["EM SOLL1"] &&
                     row["EM SOLL1"] <= currentKW &&
@@ -612,8 +612,8 @@ function calc__AbgelEMT(MQPL, currentKW, type) {
             }).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => {
                 return (
                     row["EM SOLL1"] &&
                     row["EM SOLL1"] <= currentKW &&
@@ -622,8 +622,8 @@ function calc__AbgelEMT(MQPL, currentKW, type) {
             }).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => {
                 return (
                     row["EM SOLL1"] &&
                     row["EM SOLL1"] <= currentKW &&
@@ -637,10 +637,10 @@ function calc__NOTE6(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
@@ -650,8 +650,8 @@ function calc__NOTE6(MQPL, currentKW, type) {
             }).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => {
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
@@ -661,10 +661,10 @@ function calc__NOTE6(MQPL, currentKW, type) {
             }).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
@@ -674,8 +674,8 @@ function calc__NOTE6(MQPL, currentKW, type) {
             }).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
@@ -685,8 +685,8 @@ function calc__NOTE6(MQPL, currentKW, type) {
             }).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
@@ -701,10 +701,10 @@ function calc__MLIA(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
@@ -716,8 +716,8 @@ function calc__MLIA(MQPL, currentKW, type) {
             }).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => {
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
@@ -728,10 +728,10 @@ function calc__MLIA(MQPL, currentKW, type) {
             }).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
@@ -742,8 +742,8 @@ function calc__MLIA(MQPL, currentKW, type) {
             }).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
@@ -754,8 +754,8 @@ function calc__MLIA(MQPL, currentKW, type) {
             }).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
@@ -771,10 +771,10 @@ function calc__Q3(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
@@ -784,8 +784,8 @@ function calc__Q3(MQPL, currentKW, type) {
             }).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => {
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
@@ -797,10 +797,10 @@ function calc__Q3(MQPL, currentKW, type) {
             }).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
@@ -812,8 +812,8 @@ function calc__Q3(MQPL, currentKW, type) {
             }).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
@@ -825,8 +825,8 @@ function calc__Q3(MQPL, currentKW, type) {
             }).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
@@ -843,10 +843,10 @@ function calc__EBVIA(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["EBV SOLL"] &&
                     row["EBV SOLL"] <= currentKW &&
@@ -861,16 +861,18 @@ function calc__FE54IA(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["Q1 IST"] &&
-                    row["FE54 ia"] &&
-                    row["FE54 ia"] <= currentKW &&
-                    (!row["FE54 IST"] ||
-                        (row["FE54 IST"] && row["FE54 IST"] > currentKW))
+                    row["Q1 IST"] <= currentKW &&
+                    row["BMG SOLL"] &&
+                    (!row["N1 IST"] ||
+                        (row["N1 IST"] && row["N1 IST"] > currentKW) ||
+                        !row["N3 IST"] ||
+                        (row["N3 IST"] && row["N3 IST"] > currentKW))
                 );
             }).length;
     }
@@ -880,16 +882,16 @@ function calc__Note3(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return row["Note 3 IST"] && row["Note 3 IST"] <= currentKW;
             }).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => {
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => {
                 return (
                     row["Note 3 IST"] &&
                     row["Note 3 IST"] <= currentKW &&
@@ -899,10 +901,10 @@ function calc__Note3(MQPL, currentKW, type) {
             }).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["Note 3 IST"] &&
                     row["Note 3 IST"] <= currentKW &&
@@ -912,8 +914,8 @@ function calc__Note3(MQPL, currentKW, type) {
             }).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => {
                 return (
                     row["Note 3 IST"] &&
                     row["Note 3 IST"] <= currentKW &&
@@ -923,8 +925,8 @@ function calc__Note3(MQPL, currentKW, type) {
             }).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => {
                 return (
                     row["Note 3 IST"] &&
                     row["Note 3 IST"] <= currentKW &&
@@ -939,36 +941,36 @@ function calc__Note1(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return row["Note 1 IST"] && row["Note 1 IST"] <= currentKW;
             }).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => {
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => {
                 return row["Note 1 IST"] && row["Note 1 IST"] <= currentKW;
             }).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => {
+            ).filter((row) => {
                 return row["Note 1 IST"] && row["Note 1 IST"] <= currentKW;
             }).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => {
                 return row["Note 1 IST"] && row["Note 1 IST"] <= currentKW;
             }).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => {
                 return row["Note 1 IST"] && row["Note 1 IST"] <= currentKW;
             }).length;
     }
@@ -978,36 +980,36 @@ function calc__Q3SOLL(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["Q3 SOLL3"] <= currentKW;
             }).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => {
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["Q3 SOLL2"] <= currentKW;
             }).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => {
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["Q3 SOLL2"] <= currentKW;
             }).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["Q3 SOLL2"] <= currentKW;
             }).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["Q3 SOLL2"] <= currentKW;
             }).length;
     }
@@ -1017,36 +1019,36 @@ function calc__Q1SOLL(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["Q1 SOLL3"] <= currentKW;
             }).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => {
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["N1 SOLL1"] <= currentKW;
             }).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => {
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["N1 SOLL1"] <= currentKW;
             }).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["N1 SOLL1"] <= currentKW;
             }).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["N1 SOLL1"] <= currentKW;
             }).length;
     }
@@ -1056,27 +1058,27 @@ function calc__Gesamt(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
             ).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
             ).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
             ).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
             ).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
             ).length;
     }
 }
@@ -1085,10 +1087,10 @@ function calc__IST(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["EM SOLL1"] &&
                     row["EM IST"] &&
@@ -1098,8 +1100,8 @@ function calc__IST(MQPL, currentKW, type) {
             }).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => {
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => {
                 return (
                     row["EM SOLL1"] &&
                     row["EM IST"] &&
@@ -1108,10 +1110,10 @@ function calc__IST(MQPL, currentKW, type) {
             }).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     row["EM SOLL1"] &&
                     row["EM IST"] &&
@@ -1120,8 +1122,8 @@ function calc__IST(MQPL, currentKW, type) {
             }).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => {
                 return (
                     row["EM SOLL1"] &&
                     row["EM IST"] &&
@@ -1130,8 +1132,8 @@ function calc__IST(MQPL, currentKW, type) {
             }).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => {
                 return (
                     row["EM SOLL1"] &&
                     row["EM IST"] &&
@@ -1145,10 +1147,10 @@ function calc__SOLL(MQPL, currentKW, type) {
     switch (type) {
         case "ZP7":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["Bezug"] !== "CKD" &&
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
-            ).filter(row => {
+            ).filter((row) => {
                 return (
                     (row["EM SOLL1"] &&
                         row["EM SOLL1"] <= currentKW &&
@@ -1158,28 +1160,28 @@ function calc__SOLL(MQPL, currentKW, type) {
             }).length;
         case "ZP5 Gesamt":
             return MQPL.filter(
-                row => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
-            ).filter(row => {
+                (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["EM SOLL1"] <= currentKW;
             }).length;
         case "ZP5 KT":
             return MQPL.filter(
-                row =>
+                (row) =>
                     row["ZP"] === "ZP5" &&
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
-            ).filter(row => {
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["EM SOLL1"] <= currentKW;
             }).length;
         case "ZP5 HT":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["EM SOLL1"] <= currentKW;
             }).length;
         case "ZP5 ZSB":
             return MQPL.filter(
-                row => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
-            ).filter(row => {
+                (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
+            ).filter((row) => {
                 return row["EM SOLL1"] && row["EM SOLL1"] <= currentKW;
             }).length;
     }
