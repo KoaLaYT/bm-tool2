@@ -647,10 +647,11 @@ function calc__NOTE6(MQPL, currentKW, type) {
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
             ).filter((row) => {
                 return (
-                    row["EM IST"] &&
-                    row["EM IST"] <= currentKW &&
                     row["N6 EM VSI"] &&
-                    !row["Q3 IST"]
+                    row["N6 EM VSI"] <= currentKW &&
+                    ((!row["Q3 IST"] && !row["EBV SOLL"]) ||
+                        (row["Q3 IST"] && row["Q3 IST"] <= currentKW) ||
+                        (row["EBV SOLL"] && row["EBV SOLL"] > currentKW))
                 );
             }).length;
         case "ZP5 Gesamt":
@@ -713,10 +714,10 @@ function calc__MLIA(MQPL, currentKW, type) {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
-                    !row["N6 EM VSI"] &&
-                    (!row["Q3 IST"] ||
-                        (row["Q3 IST"] && row["Q3 IST"] > currentKW))
-                    //(row["Q3 SOLL2"] > currentKW || !row["Q3 IST"])
+                    ((!row["N6 EM VSI"] &&
+                        (!row["Q3 IST"] ||
+                            (row["Q3 IST"] && row["Q3 IST"] > currentKW))) ||
+                        (row["N6 EM VSI"] && row["N6 EM VSI"] > currentKW))
                 );
             }).length;
         case "ZP5 Gesamt":
@@ -791,8 +792,11 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    (!row["EBV SOLL"] ||
-                        (row["EBV SOLL"] && row["EBV SOLL"] > currentKW))
+                    ((!row["N6 EM VIS"] &&
+                        (!row["EBV SOLL"] ||
+                            (row["EBV SOLL"] &&
+                                row["EBV SOLL"] > currentKW))) ||
+                        (row["N6 EM VSI"] && row["N6 EM VSI"] > currentKW))
                 );
             }).length;
         case "ZP5 Gesamt":
