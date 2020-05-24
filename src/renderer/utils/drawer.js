@@ -642,10 +642,11 @@ function calc__NOTE6(MQPL, currentKW, type) {
                     (row["ZP"] === "ZP7" || row["ZP"] === "ZP5A")
             ).filter((row) => {
                 return (
-                    row["EM IST"] &&
-                    row["EM IST"] <= currentKW &&
                     row["N6 EM VSI"] &&
-                    !row["Q3 IST"]
+                    row["N6 EM VSI"] <= currentKW &&
+                    ((!row["Q3 IST"] && !row["Q1 IST"]) ||
+                        (row["Q3 IST"] && row["Q3 IST"] <= currentKW) ||
+                        (row["Q1 IST"] && row["Q1 IST"] > currentKW))
                 );
             }).length;
         case "ZP5 Gesamt":
@@ -653,10 +654,10 @@ function calc__NOTE6(MQPL, currentKW, type) {
                 (row) => row["Bezug"] !== "CKD" && row["ZP"] === "ZP5"
             ).filter((row) => {
                 return (
-                    row["EM IST"] &&
-                    row["EM IST"] <= currentKW &&
                     row["N6 EM VSI"] &&
-                    !row["Q3 IST"]
+                    row["N6 EM VSI"] <= currentKW &&
+                    (!row["Q3 IST"] ||
+                        (row["Q3 IST"] && row["Q3 IST"] > currentKW))
                 );
             }).length;
         case "ZP5 KT":
@@ -666,10 +667,10 @@ function calc__NOTE6(MQPL, currentKW, type) {
                     (row["Bezug"] === "LC" || row["Bezug"] === "LC1")
             ).filter((row) => {
                 return (
-                    row["EM IST"] &&
-                    row["EM IST"] <= currentKW &&
                     row["N6 EM VSI"] &&
-                    !row["Q3 IST"]
+                    row["N6 EM VSI"] <= currentKW &&
+                    (!row["Q3 IST"] ||
+                        (row["Q3 IST"] && row["Q3 IST"] > currentKW))
                 );
             }).length;
         case "ZP5 HT":
@@ -677,10 +678,10 @@ function calc__NOTE6(MQPL, currentKW, type) {
                 (row) => row["ZP"] === "ZP5" && row["Bezug"] === "HT"
             ).filter((row) => {
                 return (
-                    row["EM IST"] &&
-                    row["EM IST"] <= currentKW &&
                     row["N6 EM VSI"] &&
-                    !row["Q3 IST"]
+                    row["N6 EM VSI"] <= currentKW &&
+                    (!row["Q3 IST"] ||
+                        (row["Q3 IST"] && row["Q3 IST"] > currentKW))
                 );
             }).length;
         case "ZP5 ZSB":
@@ -688,10 +689,10 @@ function calc__NOTE6(MQPL, currentKW, type) {
                 (row) => row["ZP"] === "ZP5" && row["Bezug"] === "ZSB"
             ).filter((row) => {
                 return (
-                    row["EM IST"] &&
-                    row["EM IST"] <= currentKW &&
                     row["N6 EM VSI"] &&
-                    !row["Q3 IST"]
+                    row["N6 EM VSI"] <= currentKW &&
+                    (!row["Q3 IST"] ||
+                        (row["Q3 IST"] && row["Q3 IST"] > currentKW))
                 );
             }).length;
     }
@@ -708,10 +709,10 @@ function calc__MLIA(MQPL, currentKW, type) {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
-                    !row["N6 EM VSI"] &&
-                    (!row["Q3 IST"] ||
-                        (row["Q3 IST"] && row["Q3 IST"] > currentKW))
-                    //(row["Q3 SOLL2"] > currentKW || !row["Q3 IST"])
+                    ((!row["N6 EM VSI"] &&
+                        (!row["Q3 IST"] ||
+                            (row["Q3 IST"] && row["Q3 IST"] > currentKW))) ||
+                        (row["N6 EM VSI"] && row["N6 EM VSI"] > currentKW))
                 );
             }).length;
         case "ZP5 Gesamt":
@@ -721,9 +722,11 @@ function calc__MLIA(MQPL, currentKW, type) {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
-                    !row["N6 EM VSI"] &&
-                    (!row["Q3 IST"] ||
-                        (row["Q3 IST"] && row["Q3 IST"] > currentKW))
+                    ((!row["N6 EM VSI"] && !row["Q3 IST"]) ||
+                        (!row["N6 EM VSI"] &&
+                            row["Q3 IST"] &&
+                            row["Q3 IST"] > currentKW) ||
+                        (row["N6 EM VSI"] && row["N6 EM VSI"] > currentKW))
                 );
             }).length;
         case "ZP5 KT":
@@ -735,9 +738,11 @@ function calc__MLIA(MQPL, currentKW, type) {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
-                    !row["N6 EM VSI"] &&
-                    (!row["Q3 IST"] ||
-                        (row["Q3 IST"] && row["Q3 IST"] > currentKW))
+                    ((!row["N6 EM VSI"] && !row["Q3 IST"]) ||
+                        (!row["N6 EM VSI"] &&
+                            row["Q3 IST"] &&
+                            row["Q3 IST"] > currentKW) ||
+                        (row["N6 EM VSI"] && row["N6 EM VSI"] > currentKW))
                 );
             }).length;
         case "ZP5 HT":
@@ -747,9 +752,11 @@ function calc__MLIA(MQPL, currentKW, type) {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
-                    !row["N6 EM VSI"] &&
-                    (!row["Q3 IST"] ||
-                        (row["Q3 IST"] && row["Q3 IST"] > currentKW))
+                    ((!row["N6 EM VSI"] && !row["Q3 IST"]) ||
+                        (!row["N6 EM VSI"] &&
+                            row["Q3 IST"] &&
+                            row["Q3 IST"] > currentKW) ||
+                        (row["N6 EM VSI"] && row["N6 EM VSI"] > currentKW))
                 );
             }).length;
         case "ZP5 ZSB":
@@ -759,9 +766,11 @@ function calc__MLIA(MQPL, currentKW, type) {
                 return (
                     row["EM IST"] &&
                     row["EM IST"] <= currentKW &&
-                    !row["N6 EM VSI"] &&
-                    (!row["Q3 IST"] ||
-                        (row["Q3 IST"] && row["Q3 IST"] > currentKW))
+                    ((!row["N6 EM VSI"] && !row["Q3 IST"]) ||
+                        (!row["N6 EM VSI"] &&
+                            row["Q3 IST"] &&
+                            row["Q3 IST"] > currentKW) ||
+                        (row["N6 EM VSI"] && row["N6 EM VSI"] > currentKW))
                 );
             }).length;
     }
@@ -778,8 +787,10 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    (!row["Q1 IST"] ||
-                        (row["Q1 IST"] && row["Q1 IST"] > currentKW))
+                    ((!row["N6 EM VIS"] &&
+                        (!row["Q1 IST"] ||
+                            (row["Q1 IST"] && row["Q1 IST"] > currentKW))) ||
+                        (row["N6 EM VSI"] && row["N6 EM VSI"] > currentKW))
                 );
             }).length;
         case "ZP5 Gesamt":
@@ -789,9 +800,8 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    (!row["Note 3 IST"] ||
-                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW)) &&
-                    (!row["Note 1 IST"] ||
+                    ((!row["Note 3 IST"] && !row["Note 1 IST"]) ||
+                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW) ||
                         (row["Note 1 IST"] && row["Note 1 IST"] > currentKW))
                 );
             }).length;
@@ -804,9 +814,8 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    (!row["Note 3 IST"] ||
-                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW)) &&
-                    (!row["Note 1 IST"] ||
+                    ((!row["Note 3 IST"] && !row["Note 1 IST"]) ||
+                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW) ||
                         (row["Note 1 IST"] && row["Note 1 IST"] > currentKW))
                 );
             }).length;
@@ -817,9 +826,8 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    (!row["Note 3 IST"] ||
-                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW)) &&
-                    (!row["Note 1 IST"] ||
+                    ((!row["Note 3 IST"] && !row["Note 1 IST"]) ||
+                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW) ||
                         (row["Note 1 IST"] && row["Note 1 IST"] > currentKW))
                 );
             }).length;
@@ -830,9 +838,8 @@ function calc__Q3(MQPL, currentKW, type) {
                 return (
                     row["Q3 IST"] &&
                     row["Q3 IST"] <= currentKW &&
-                    (!row["Note 3 IST"] ||
-                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW)) &&
-                    (!row["Note 1 IST"] ||
+                    ((!row["Note 3 IST"] && !row["Note 1 IST"]) ||
+                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW) ||
                         (row["Note 1 IST"] && row["Note 1 IST"] > currentKW))
                 );
             }).length;
