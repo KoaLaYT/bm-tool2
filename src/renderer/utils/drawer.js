@@ -1,3 +1,5 @@
+import { totalWeeks } from "./week-range";
+
 const XLSX = require("xlsx");
 const { EventEmitter } = require("events");
 
@@ -500,15 +502,7 @@ export function getFullWeeksArray(startWeek, endWeek) {
  * @param {string} endWeek
  */
 function getWeeksArray(startWeek, endWeek) {
-    const years = Number(endWeek.slice(0, 4)) - Number(startWeek.slice(0, 4));
-    const weeks = Number(endWeek.slice(7)) - Number(startWeek.slice(7)) + 1;
-    const totalWeeks =
-        weeks < 0 ? (years - 1) * 52 + weeks + 52 : years * 52 + weeks;
-
-    return new Array(totalWeeks).fill(1).map((_, index) => {
-        const week = Number(startWeek.slice(7)) + index;
-        return ((week - 1) % 52) + 1;
-    });
+    return totalWeeks(startWeek, endWeek);
 }
 
 /**
