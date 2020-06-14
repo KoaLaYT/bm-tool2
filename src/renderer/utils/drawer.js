@@ -1,4 +1,4 @@
-import { totalWeeks } from "./week-range";
+import { totalWeeks, totalFullWeeks } from "./week-range";
 
 const XLSX = require("xlsx");
 const { EventEmitter } = require("events");
@@ -477,23 +477,7 @@ function renderXaxis(beginWeek, endWeek) {
  * @param {string} endWeek
  */
 export function getFullWeeksArray(startWeek, endWeek) {
-    const result = [];
-
-    let currentWeek = startWeek;
-    while (currentWeek <= endWeek) {
-        result.push(currentWeek);
-        let week = Number(currentWeek.slice(7));
-        let year = Number(currentWeek.slice(0, 4));
-
-        if (week + 1 > 52) {
-            year = year + 1;
-        }
-        week = (week % 52) + 1;
-        week = week < 10 ? "0" + week : week;
-        currentWeek = year + "-KW" + week;
-    }
-
-    return result;
+    return totalFullWeeks(startWeek, endWeek);
 }
 
 /**

@@ -125,7 +125,7 @@ import { LocalStorageUtil } from "@/utils/localstorage";
 import { FormUtil } from "@/utils/form";
 import BmProjectTermin from "@/components/BmProjectTermin";
 import { DrawerUtil } from "@/utils/drawer";
-import { getWeekRange } from "@/utils/week-range";
+import { totalFullWeeks } from "@/utils/week-range";
 
 export default {
     name: "Draw",
@@ -174,30 +174,16 @@ export default {
     },
     computed: {
         weekRange() {
-            const result = [];
+            let result = [];
             const weekTest = /^\d{4}-KW\d{2}$/;
             if (
                 weekTest.test(this.formData.startWeek) &&
                 weekTest.test(this.formData.endWeek)
             ) {
-                // 计算范围内的周数
-                const yearWeeks = getWeekRange(
+                result = totalFullWeeks(
                     this.formData.startWeek,
                     this.formData.endWeek
                 );
-
-                let currentWeek = this.formData.startWeek;
-                while (currentWeek <= this.formData.endWeek) {
-                    result.push(currentWeek);
-                    let week = Number(currentWeek.slice(7));
-                    let year = Number(currentWeek.slice(0, 4));
-                    const totalWeeks = yearWeeks.get(year);
-
-                    if (week === totalWeeks) year += 1;
-                    week = (week % totalWeeks) + 1;
-                    week = week < 10 ? "0" + week : week;
-                    currentWeek = year + "-KW" + week;
-                }
             }
             // 当前周在范围之外的话，清空它！
             if (!result.includes(this.formData.curWeek)) {
