@@ -854,10 +854,11 @@ function calc__FE54IA(MQPL, currentKW, type) {
                     row["EBV IST"] &&
                     row["EBV IST"] <= currentKW &&
                     row["BMG SOLL"] &&
-                    (!row["N1 IST"] ||
-                        (row["N1 IST"] && row["N1 IST"] > currentKW) ||
-                        !row["N3 IST"] ||
-                        (row["N3 IST"] && row["N3 IST"] > currentKW))
+                    (!row["FE54 IST"] ||
+                        (row["FE54 IST"] && row["FE54"] > currentKW)) &&
+                    ((!row["Note 3 IST"] && !row["Note 1 IST"]) ||
+                        (row["Note 3 IST"] && row["Note 3 IST"] > currentKW) ||
+                        (row["Note 1 IST"] && row["Note 1 IST"] > currentKW))
                 );
             }).length;
     }
