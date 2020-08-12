@@ -1,6 +1,6 @@
 {
     "name": "bm-tool2",
-    "version": "2.2.6",
+    "version": "2.2.7",
     "description": "An electron-vue project",
     "author": "KoaLaYT <hytohyeah@outlook.com>",
     "scripts": {
