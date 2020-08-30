@@ -17,7 +17,7 @@
             <el-input
                 v-model="formData[termin.field]"
                 clearable
-            ></el-input>
+            />
         </el-form-item>
     </el-form>
 </template>
@@ -28,17 +28,17 @@ export default {
   props: {
     isNoVFF: {
       type: Boolean,
-      required: true
+      required: true,
     },
     reset: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   watch: {
     reset() {
       this.$refs.form.resetFields();
-    }
+    },
   },
   data() {
     const fields = [
@@ -49,7 +49,7 @@ export default {
       "OS TBT",
       "OS",
       "SOP TBT",
-      "SOP"
+      "SOP",
     ];
     const weekFormat = (rule, value, cb) => {
       if (value) {
@@ -64,20 +64,22 @@ export default {
       (res, field) => ({ ...res, [field]: "" }),
       {}
     );
-    const rules = fields.reduce(
-      (res, field) => ({
-        ...res,
-        [field]: [
-          { required: true, message: `必须填写该时间` },
-          { validator: weekFormat, trigger: "blur" }
-        ]
-      }),
-      {}
-    );
+    const rules = fields
+      .filter((field) => !field.startsWith("VFF"))
+      .reduce(
+        (res, field) => ({
+          ...res,
+          [field]: [
+            { required: true, message: `必须填写该时间` },
+            { validator: weekFormat, trigger: "blur" },
+          ],
+        }),
+        {}
+      );
     return {
       fields,
       formData,
-      rules
+      rules,
     };
   },
   computed: {
@@ -90,10 +92,10 @@ export default {
         }
         return {
           label,
-          field
+          field,
         };
       });
-    }
-  }
+    },
+  },
 };
 </script>
