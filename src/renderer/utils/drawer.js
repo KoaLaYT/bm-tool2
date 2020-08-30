@@ -287,6 +287,7 @@ export class DrawerUtil {
         const terminType = /zp7/i.test(type) ? "zp7" : "zp5";
         Object.entries(projectInfo[terminType + "Term"]).forEach(
             ([termin, KW]) => {
+                if (!KW) return;
                 const index = fullTermin.indexOf(KW);
                 const point = {
                     x: XbeginPoint.x + index * width + width / 2,
